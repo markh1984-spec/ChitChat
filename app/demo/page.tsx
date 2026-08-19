@@ -43,16 +43,19 @@ export default function DemoPage() {
 
       {step === 'welcome' && (
         <section className="text-center py-10">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <span className="inline-block text-5xl mb-4" aria-hidden="true">
+            👋
+          </span>
+          <h1 className="font-display text-4xl sm:text-5xl font-semibold text-primary-800 mb-4">
             Let&rsquo;s set up your ChitChat profile
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-xl text-ink/70 mb-8 max-w-xl mx-auto leading-relaxed">
             This is a demo with made-up neighbours &mdash; it shows how ChitChat finds you
             people to meet nearby, or people who share your interests, or a bit of both.
           </p>
           <button
             onClick={() => setStep('profile')}
-            className="text-xl font-bold bg-primary-600 hover:bg-primary-700 text-white px-10 py-4 rounded-lg transition-colors"
+            className="text-xl font-bold bg-primary-600 hover:bg-primary-700 text-cream px-10 py-4 rounded-full transition-colors shadow-md"
           >
             Get Started
           </button>
@@ -61,10 +64,12 @@ export default function DemoPage() {
 
       {step === 'profile' && (
         <section className="py-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">A few details about you</h2>
+          <h2 className="font-display text-3xl font-semibold text-primary-800 mb-6">
+            A few details about you
+          </h2>
           <div className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-xl font-medium text-gray-800 mb-2">
+              <label htmlFor="name" className="block text-xl font-medium text-ink mb-2">
                 Your first name
               </label>
               <input
@@ -73,18 +78,18 @@ export default function DemoPage() {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="e.g. Barbara"
-                className="w-full text-xl px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none"
+                className="w-full text-xl px-4 py-3 border-2 border-primary-200 bg-white rounded-xl focus:border-primary-500 focus:outline-none"
               />
             </div>
             <div>
-              <label htmlFor="town" className="block text-xl font-medium text-gray-800 mb-2">
+              <label htmlFor="town" className="block text-xl font-medium text-ink mb-2">
                 Your area
               </label>
               <select
                 id="town"
                 value={town}
                 onChange={e => setTown(e.target.value)}
-                className="w-full text-xl px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none"
+                className="w-full text-xl px-4 py-3 border-2 border-primary-200 bg-white rounded-xl focus:border-primary-500 focus:outline-none"
               >
                 <option>Riverside</option>
                 <option>Oakfield</option>
@@ -102,10 +107,10 @@ export default function DemoPage() {
 
       {step === 'interests' && (
         <section className="py-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="font-display text-3xl font-semibold text-primary-800 mb-2">
             What do you enjoy, {name || 'friend'}?
           </h2>
-          <p className="text-lg text-gray-600 mb-6">
+          <p className="text-lg text-ink/70 mb-6">
             Pick at least {MIN_INTERESTS} &mdash; the more you pick, the better your matches.
           </p>
           <InterestPicker selected={selectedInterests} onToggle={toggleInterest} />
@@ -121,7 +126,7 @@ export default function DemoPage() {
 
       {step === 'matches' && (
         <section className="py-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">
+          <h2 className="font-display text-3xl font-semibold text-primary-800 mb-6">
             People near {town} you might like
           </h2>
 
@@ -148,12 +153,12 @@ function ProgressBar({ step }: { step: Step }) {
   const steps: Step[] = ['welcome', 'profile', 'interests', 'matches']
   const currentIndex = steps.indexOf(step)
   return (
-    <div className="flex gap-2 mb-8" aria-hidden="true">
+    <div className="flex gap-2 mb-8 mt-4" aria-hidden="true">
       {steps.map((s, i) => (
         <div
           key={s}
-          className={`h-2 flex-1 rounded-full ${
-            i <= currentIndex ? 'bg-primary-600' : 'bg-gray-200'
+          className={`h-2 flex-1 rounded-full transition-colors ${
+            i <= currentIndex ? 'bg-primary-600' : 'bg-primary-100'
           }`}
         />
       ))}
@@ -166,7 +171,7 @@ function NextButton({ onClick, disabled }: { onClick: () => void; disabled?: boo
     <button
       onClick={onClick}
       disabled={disabled}
-      className="text-xl font-bold bg-primary-600 hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-8 py-4 rounded-lg transition-colors"
+      className="text-xl font-bold bg-primary-600 hover:bg-primary-700 disabled:bg-primary-100 disabled:text-primary-300 disabled:cursor-not-allowed text-cream px-8 py-4 rounded-full transition-colors shadow-sm disabled:shadow-none"
     >
       Continue
     </button>
@@ -177,7 +182,7 @@ function BackButton({ onClick, label = '← Back' }: { onClick: () => void; labe
   return (
     <button
       onClick={onClick}
-      className="text-xl font-semibold text-gray-600 hover:text-gray-900 px-6 py-4"
+      className="text-xl font-semibold text-ink/60 hover:text-primary-700 px-6 py-4"
     >
       {label}
     </button>

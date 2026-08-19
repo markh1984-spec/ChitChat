@@ -21,8 +21,8 @@ export default function InterestPicker({
             aria-pressed={isSelected}
             className={`flex items-center gap-2 text-lg font-medium px-4 py-4 rounded-xl border-2 transition-colors text-left ${
               isSelected
-                ? 'bg-primary-600 border-primary-600 text-white'
-                : 'bg-white border-gray-200 text-gray-800 hover:border-primary-300'
+                ? 'bg-primary-600 border-primary-600 text-cream shadow-sm'
+                : 'bg-white border-primary-100 text-ink hover:border-primary-300'
             }`}
           >
             <span className="text-2xl" aria-hidden="true">

@@ -1,9 +1,14 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Fraunces } from 'next/font/google'
 import './globals.css'
 import SiteHeader from '@/components/SiteHeader'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'], variable: '--font-body' })
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['500', '600', '700'],
+})
 
 export const metadata: Metadata = {
   title: 'ChitChat - Connect with People Who Share Your Interests',
@@ -17,10 +22,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${fraunces.variable} font-sans bg-cream text-ink`}>
         <SiteHeader />
         {children}
-        <footer className="border-t border-gray-200 py-8 text-center text-gray-500">
+        <footer className="border-t border-primary-100 py-8 text-center text-primary-800/60 text-base">
           <p>ChitChat &mdash; a student project prototype. Not a live product.</p>
         </footer>
       </body>
