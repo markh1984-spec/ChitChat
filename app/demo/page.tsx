@@ -5,12 +5,13 @@ import InterestPicker from '@/components/InterestPicker'
 import PrioritySlider from '@/components/PrioritySlider'
 import MatchCard from '@/components/MatchCard'
 import TownAutocomplete from '@/components/TownAutocomplete'
+import AvailabilityPicker from '@/components/AvailabilityPicker'
 import { MOCK_USERS } from '@/lib/mockUsers'
 import { rankMatches, BALANCED_PRIORITY } from '@/lib/discover'
 import { ICEBREAKER_QUESTION, ICEBREAKER_OPTIONS, getIcebreakerOption } from '@/lib/icebreaker'
 import { loadLastLogin, saveLastLogin, clearLastLogin } from '@/lib/storage'
 
-type Step = 'welcome' | 'icebreaker' | 'profile' | 'interests' | 'matches'
+type Step = 'welcome' | 'icebreaker' | 'profile' | 'availability' | 'interests' | 'matches'
 type SaveStatus = 'idle' | 'saving' | 'saved' | 'error'
 
 const MIN_INTERESTS = 3
@@ -24,6 +25,7 @@ export default function DemoPage() {
   const [ageInput, setAgeInput] = useState(DEFAULT_AGE)
   const age = Number(ageInput) || 0
   const [selectedInterests, setSelectedInterests] = useState<string[]>([])
+  const [availability, setAvailability] = useState<string[]>([])
   const [priority, setPriority] = useState(BALANCED_PRIORITY)
   const [icebreakerAnswerId, setIcebreakerAnswerId] = useState<string | null>(null)
 
@@ -55,7 +57,7 @@ export default function DemoPage() {
         const res = await fetch('/api/profile', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, pin, town, age, selectedInterests, priority, icebreakerAnswerId }),
+          body: JSON.stringify({ name, pin, town, age, selectedInterests, availability, priority, icebreakerAnswerId }),
         })
         setSaveStatus(res.ok ? 'saved' : 'error')
         if (res.ok) saveLastLogin({ name, pin })
@@ -67,11 +69,17 @@ export default function DemoPage() {
     return () => {
       if (saveTimeout.current) clearTimeout(saveTimeout.current)
     }
-  }, [name, pin, town, age, selectedInterests, priority, icebreakerAnswerId])
+  }, [name, pin, town, age, selectedInterests, availability, priority, icebreakerAnswerId])
 
   const toggleInterest = (id: string) => {
     setSelectedInterests(prev =>
       prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    )
+  }
+
+  const toggleAvailability = (key: string) => {
+    setAvailability(prev =>
+      prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]
     )
   }
 
@@ -100,6 +108,7 @@ export default function DemoPage() {
       setTown(profile.town)
       setAgeInput(String(profile.age))
       setSelectedInterests(profile.selectedInterests)
+      setAvailability(profile.availability ?? [])
       setPriority(profile.priority)
       setIcebreakerAnswerId(profile.icebreakerAnswerId)
       saveLastLogin({ name: profile.name, pin: profile.pin })
@@ -117,6 +126,7 @@ export default function DemoPage() {
     setTown('Riverside')
     setAgeInput(DEFAULT_AGE)
     setSelectedInterests([])
+    setAvailability([])
     setPriority(BALANCED_PRIORITY)
     setIcebreakerAnswerId(null)
     setSaveStatus('idle')
@@ -291,9 +301,26 @@ export default function DemoPage() {
           <div className="flex justify-between mt-10">
             <BackButton onClick={() => setStep('welcome')} />
             <NextButton
-              onClick={() => setStep('interests')}
+              onClick={() => setStep('availability')}
               disabled={name.trim().length === 0 || pin.length !== 4}
             />
+          </div>
+        </section>
+      )}
+
+      {step === 'availability' && (
+        <section className="py-6">
+          <h2 className="font-display text-3xl font-semibold text-primary-800 mb-2">
+            When are you happy to receive a call?
+          </h2>
+          <p className="text-lg text-ink/70 mb-6">
+            Tap any times that suit you &mdash; this is shown to your matches, and you can
+            change it any time. It&rsquo;s fine to leave this blank for now.
+          </p>
+          <AvailabilityPicker selected={availability} onToggle={toggleAvailability} />
+          <div className="flex justify-between mt-10">
+            <BackButton onClick={() => setStep('profile')} />
+            <NextButton onClick={() => setStep('interests')} />
           </div>
         </section>
       )}
@@ -308,7 +335,7 @@ export default function DemoPage() {
           </p>
           <InterestPicker selected={selectedInterests} onToggle={toggleInterest} />
           <div className="flex justify-between mt-10">
-            <BackButton onClick={() => setStep('profile')} />
+            <BackButton onClick={() => setStep('availability')} />
             <NextButton
               onClick={() => setStep('icebreaker')}
               disabled={selectedInterests.length < MIN_INTERESTS}
@@ -375,7 +402,7 @@ function SaveStatusNote({ status }: { status: SaveStatus }) {
 }
 
 function ProgressBar({ step }: { step: Step }) {
-  const steps: Step[] = ['welcome', 'profile', 'interests', 'icebreaker', 'matches']
+  const steps: Step[] = ['welcome', 'profile', 'availability', 'interests', 'icebreaker', 'matches']
   const currentIndex = steps.indexOf(step)
   return (
     <div className="flex gap-2 mb-8 mt-4" aria-hidden="true">

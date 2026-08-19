@@ -4,6 +4,7 @@ export interface AirtableProfile {
   town: string
   age: number
   selectedInterests: string[]
+  availability: string[]
   priority: number
   icebreakerAnswerId: string | null
 }
@@ -34,6 +35,7 @@ function toFields(profile: AirtableProfile) {
     Town: profile.town,
     Age: profile.age,
     Interests: profile.selectedInterests.join(','),
+    Availability: profile.availability.join(','),
     Weights: String(profile.priority),
     IcebreakerAnswerId: profile.icebreakerAnswerId ?? '',
   }
@@ -50,6 +52,10 @@ function fromFields(record: { fields: Record<string, unknown> }): AirtableProfil
     age: typeof f.Age === 'number' ? f.Age : 0,
     selectedInterests:
       typeof f.Interests === 'string' && f.Interests.length > 0 ? f.Interests.split(',') : [],
+    availability:
+      typeof f.Availability === 'string' && f.Availability.length > 0
+        ? f.Availability.split(',')
+        : [],
     priority,
     icebreakerAnswerId: typeof f.IcebreakerAnswerId === 'string' && f.IcebreakerAnswerId
       ? f.IcebreakerAnswerId
