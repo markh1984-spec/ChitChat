@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Logo from '@/components/Logo'
 
 export default function Home() {
   return (
@@ -6,9 +7,7 @@ export default function Home() {
       {/* Hero */}
       <section className="bg-gradient-to-b from-primary-100/70 via-cream to-cream">
         <div className="max-w-4xl mx-auto px-6 py-20 sm:py-28 text-center">
-          <span className="inline-block text-5xl mb-4" aria-hidden="true">
-            💬
-          </span>
+          <Logo className="w-16 h-16 mx-auto mb-4" />
           <h1 className="font-display text-5xl sm:text-6xl font-semibold text-primary-800 mb-6">
             ChitChat
           </h1>

@@ -10,7 +10,6 @@ const AXES: Array<{
 }> = [
   { key: 'location', label: 'Location', emoji: '📍', hint: 'How close someone lives' },
   { key: 'interests', label: 'Interests', emoji: '🎯', hint: 'How many hobbies you share' },
-  { key: 'age', label: 'Age', emoji: '🎂', hint: 'How close in age someone is' },
 ]
 
 function describeWeight(value: number): string {
