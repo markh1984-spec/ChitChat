@@ -26,6 +26,7 @@ export default function DemoPage() {
   const age = Number(ageInput) || 0
   const [selectedInterests, setSelectedInterests] = useState<string[]>([])
   const [availability, setAvailability] = useState<string[]>([])
+  const [adHoc, setAdHoc] = useState(false)
   const [priority, setPriority] = useState(BALANCED_PRIORITY)
   const [icebreakerAnswerId, setIcebreakerAnswerId] = useState<string | null>(null)
 
@@ -57,7 +58,7 @@ export default function DemoPage() {
         const res = await fetch('/api/profile', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, pin, town, age, selectedInterests, availability, priority, icebreakerAnswerId }),
+          body: JSON.stringify({ name, pin, town, age, selectedInterests, availability, adHoc, priority, icebreakerAnswerId }),
         })
         setSaveStatus(res.ok ? 'saved' : 'error')
         if (res.ok) saveLastLogin({ name, pin })
@@ -69,7 +70,7 @@ export default function DemoPage() {
     return () => {
       if (saveTimeout.current) clearTimeout(saveTimeout.current)
     }
-  }, [name, pin, town, age, selectedInterests, availability, priority, icebreakerAnswerId])
+  }, [name, pin, town, age, selectedInterests, availability, adHoc, priority, icebreakerAnswerId])
 
   const toggleInterest = (id: string) => {
     setSelectedInterests(prev =>
@@ -81,6 +82,10 @@ export default function DemoPage() {
     setAvailability(prev =>
       prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]
     )
+  }
+
+  const toggleAdHoc = () => {
+    setAdHoc(prev => !prev)
   }
 
   const chooseIcebreaker = (optionId: string) => {
@@ -109,6 +114,7 @@ export default function DemoPage() {
       setAgeInput(String(profile.age))
       setSelectedInterests(profile.selectedInterests)
       setAvailability(profile.availability ?? [])
+      setAdHoc(profile.adHoc ?? false)
       setPriority(profile.priority)
       setIcebreakerAnswerId(profile.icebreakerAnswerId)
       saveLastLogin({ name: profile.name, pin: profile.pin })
@@ -127,6 +133,7 @@ export default function DemoPage() {
     setAgeInput(DEFAULT_AGE)
     setSelectedInterests([])
     setAvailability([])
+    setAdHoc(false)
     setPriority(BALANCED_PRIORITY)
     setIcebreakerAnswerId(null)
     setSaveStatus('idle')
@@ -143,8 +150,8 @@ export default function DemoPage() {
   )
 
   const matches = useMemo(
-    () => rankMatches(me, MOCK_USERS, priority),
-    [me, priority]
+    () => rankMatches(me, MOCK_USERS, priority, availability, adHoc),
+    [me, priority, availability, adHoc]
   )
 
   const icebreakerAnswer = icebreakerAnswerId ? getIcebreakerOption(icebreakerAnswerId) : null
@@ -317,7 +324,12 @@ export default function DemoPage() {
             Tap any times that suit you &mdash; this is shown to your matches, and you can
             change it any time. It&rsquo;s fine to leave this blank for now.
           </p>
-          <AvailabilityPicker selected={availability} onToggle={toggleAvailability} />
+          <AvailabilityPicker
+            selected={availability}
+            onToggle={toggleAvailability}
+            adHoc={adHoc}
+            onToggleAdHoc={toggleAdHoc}
+          />
           <div className="flex justify-between mt-10">
             <BackButton onClick={() => setStep('profile')} />
             <NextButton onClick={() => setStep('interests')} />

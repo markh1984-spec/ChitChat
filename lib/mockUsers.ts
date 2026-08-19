@@ -8,6 +8,7 @@ export interface MockUser {
   avatar: string
   interests: Array<{ interestId: string; level: number }>
   availability: string[]
+  adHoc: boolean
 }
 
 export const MOCK_USERS: MockUser[] = [
@@ -25,6 +26,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'cards', level: 5 },
     ],
     availability: ['mon-morning', 'wed-afternoon'],
+    adHoc: false,
   },
   {
     id: 'm2',
@@ -40,6 +42,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'history', level: 4 },
     ],
     availability: ['tue-evening', 'thu-morning', 'sat-afternoon'],
+    adHoc: false,
   },
   {
     id: 'm3',
@@ -55,6 +58,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'music', level: 5 },
     ],
     availability: ['mon-afternoon', 'fri-evening'],
+    adHoc: true,
   },
   {
     id: 'm4',
@@ -70,6 +74,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'reading', level: 6 },
     ],
     availability: ['wed-morning', 'sun-afternoon', 'thu-evening'],
+    adHoc: false,
   },
   {
     id: 'm5',
@@ -85,6 +90,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'music', level: 7 },
     ],
     availability: ['tue-morning', 'sat-morning'],
+    adHoc: false,
   },
   {
     id: 'm6',
@@ -100,6 +106,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'walking', level: 5 },
     ],
     availability: ['mon-evening', 'wed-evening', 'fri-morning'],
+    adHoc: true,
   },
   {
     id: 'm7',
@@ -115,6 +122,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'volunteering', level: 6 },
     ],
     availability: ['thu-afternoon', 'sun-morning'],
+    adHoc: false,
   },
   {
     id: 'm8',
@@ -130,6 +138,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'walking', level: 6 },
     ],
     availability: ['tue-afternoon', 'fri-afternoon', 'sat-evening'],
+    adHoc: false,
   },
   {
     id: 'm9',
@@ -145,6 +154,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'cooking', level: 5 },
     ],
     availability: ['mon-morning', 'thu-morning'],
+    adHoc: true,
   },
   {
     id: 'm10',
@@ -160,6 +170,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'cards', level: 6 },
     ],
     availability: ['wed-afternoon', 'sat-afternoon', 'sun-evening'],
+    adHoc: false,
   },
   {
     id: 'm11',
@@ -175,6 +186,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'pub_quiz', level: 5 },
     ],
     availability: ['mon-morning', 'wed-afternoon'],
+    adHoc: false,
   },
   {
     id: 'm12',
@@ -190,6 +202,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'theatre', level: 5 },
     ],
     availability: ['tue-evening', 'thu-morning', 'sat-afternoon'],
+    adHoc: true,
   },
   {
     id: 'm13',
@@ -205,6 +218,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'tech', level: 4 },
     ],
     availability: ['mon-afternoon', 'fri-evening'],
+    adHoc: false,
   },
   {
     id: 'm14',
@@ -220,6 +234,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'composting', level: 6 },
     ],
     availability: ['wed-morning', 'sun-afternoon', 'thu-evening'],
+    adHoc: false,
   },
   {
     id: 'm15',
@@ -235,6 +250,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'pub_quiz', level: 6 },
     ],
     availability: ['tue-morning', 'sat-morning'],
+    adHoc: true,
   },
   {
     id: 'm16',
@@ -250,6 +266,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'sudoku', level: 6 },
     ],
     availability: ['mon-evening', 'wed-evening', 'fri-morning'],
+    adHoc: false,
   },
   {
     id: 'm17',
@@ -265,6 +282,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'history', level: 6 },
     ],
     availability: ['thu-afternoon', 'sun-morning'],
+    adHoc: false,
   },
   {
     id: 'm18',
@@ -280,6 +298,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'art_gallery', level: 5 },
     ],
     availability: ['tue-afternoon', 'fri-afternoon', 'sat-evening'],
+    adHoc: true,
   },
   {
     id: 'm19',
@@ -295,6 +314,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'wildlife', level: 5 },
     ],
     availability: ['mon-morning', 'thu-morning'],
+    adHoc: false,
   },
   {
     id: 'm20',
@@ -310,6 +330,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'crafts', level: 6 },
     ],
     availability: ['wed-afternoon', 'sat-afternoon', 'sun-evening'],
+    adHoc: false,
   },
   {
     id: 'm21',
@@ -325,6 +346,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'history', level: 5 },
     ],
     availability: ['mon-morning', 'wed-afternoon'],
+    adHoc: true,
   },
   {
     id: 'm22',
@@ -340,6 +362,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'dancing', level: 6 },
     ],
     availability: ['tue-evening', 'thu-morning', 'sat-afternoon'],
+    adHoc: false,
   },
   {
     id: 'm23',
@@ -355,6 +378,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'martial_arts', level: 5 },
     ],
     availability: ['mon-afternoon', 'fri-evening'],
+    adHoc: false,
   },
   {
     id: 'm24',
@@ -370,6 +394,7 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'brewing', level: 5 },
     ],
     availability: ['wed-morning', 'sun-afternoon', 'thu-evening'],
+    adHoc: true,
   },
   {
     id: 'm25',
@@ -385,5 +410,6 @@ export const MOCK_USERS: MockUser[] = [
       { interestId: 'tea', level: 5 },
     ],
     availability: ['tue-morning', 'sat-morning'],
+    adHoc: false,
   },
 ]

@@ -9,6 +9,8 @@ export interface DiscoverResult {
   locationScore: number
   combinedScore: number
   sharedInterestIds: string[]
+  overlappingAvailability: string[]
+  adHocAvailable: boolean
 }
 
 /**
@@ -29,9 +31,12 @@ export function locationScoreFromDistance(distanceMiles: number): number {
 export function rankMatches(
   me: UserProfile,
   candidates: MockUser[],
-  priority: number
+  priority: number,
+  myAvailability: string[] = [],
+  myAdHoc: boolean = false
 ): DiscoverResult[] {
   const weight = Math.max(0, Math.min(1, priority))
+  const myAvailabilitySet = new Set(myAvailability)
 
   return candidates
     .map(candidate => {
@@ -45,8 +50,18 @@ export function rankMatches(
       const sharedInterestIds = candidate.interests
         .filter(i => myInterestIds.has(i.interestId))
         .map(i => i.interestId)
+      const overlappingAvailability = candidate.availability.filter(a => myAvailabilitySet.has(a))
+      const adHocAvailable = myAdHoc || candidate.adHoc
 
-      return { user: candidate, interestScore, locationScore, combinedScore, sharedInterestIds }
+      return {
+        user: candidate,
+        interestScore,
+        locationScore,
+        combinedScore,
+        sharedInterestIds,
+        overlappingAvailability,
+        adHocAvailable,
+      }
     })
     .sort((a, b) => b.combinedScore - a.combinedScore)
 }

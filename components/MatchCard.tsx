@@ -3,9 +3,9 @@ import { getInterest } from '@/lib/interests'
 import { describeAvailability } from '@/lib/availability'
 
 export default function MatchCard({ result }: { result: DiscoverResult }) {
-  const { user, combinedScore, sharedInterestIds } = result
+  const { user, combinedScore, sharedInterestIds, overlappingAvailability, adHocAvailable } = result
   const { bg, text } = scoreColor(combinedScore)
-  const availabilityLabels = describeAvailability(user.availability)
+  const overlapLabels = describeAvailability(overlappingAvailability)
 
   return (
     <div className="bg-white border-2 border-primary-100 rounded-xl p-3 flex items-center gap-3 shadow-sm hover:shadow-md hover:border-primary-200 transition-shadow">
@@ -61,19 +61,25 @@ export default function MatchCard({ result }: { result: DiscoverResult }) {
             </div>
           )}
 
-          {availabilityLabels.length > 0 && (
+          {adHocAvailable && (
+            <span className="text-xs font-medium bg-primary-50 text-primary-800 px-2 py-0.5 rounded-full">
+              🎲 Happy to chat anytime
+            </span>
+          )}
+
+          {!adHocAvailable && overlapLabels.length > 0 && (
             <div className="relative inline-block group">
               <button
                 type="button"
                 className="text-xs font-medium bg-primary-50 text-primary-800 px-2 py-0.5 rounded-full cursor-default"
               >
-                📅 Available to call
+                📅 {overlapLabels.length} time{overlapLabels.length > 1 ? 's' : ''} you&rsquo;re both free
               </button>
               <div
                 role="tooltip"
                 className="invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 transition-opacity absolute z-30 bottom-full left-0 mb-2 w-max max-w-[220px] bg-ink text-cream text-xs rounded-lg p-2 shadow-lg flex flex-wrap gap-1"
               >
-                {availabilityLabels.map(label => (
+                {overlapLabels.map(label => (
                   <span key={label} className="bg-white/10 px-2 py-0.5 rounded-full whitespace-nowrap">
                     {label}
                   </span>
