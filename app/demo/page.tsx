@@ -140,7 +140,7 @@ export default function DemoPage() {
   const icebreakerAnswer = icebreakerAnswerId ? getIcebreakerOption(icebreakerAnswerId) : null
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-10">
+    <main className={`mx-auto px-6 py-10 ${step === 'matches' ? 'max-w-5xl' : 'max-w-3xl'}`}>
       <ProgressBar step={step} />
 
       {step === 'welcome' && (
@@ -343,7 +343,7 @@ export default function DemoPage() {
             <PrioritySlider value={priority} onChange={setPriority} />
           </div>
 
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {matches.map(result => (
               <MatchCard key={result.user.id} result={result} />
             ))}

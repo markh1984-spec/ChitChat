@@ -19,20 +19,20 @@ export default function MatchCard({ result }: { result: DiscoverResult }) {
       />
 
       <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between gap-2">
-          <h3 className="font-display text-lg font-semibold text-ink truncate">
-            {user.name}, {user.age}
-          </h3>
+        <h3 className="font-display text-lg font-semibold text-ink truncate">
+          {user.name}, {user.age}
+        </h3>
+        <div className="flex items-center justify-between gap-2 mt-0.5">
+          <p className="text-sm text-ink/50 truncate">
+            {user.town} &middot; {user.distanceMiles.toFixed(1)} mi
+          </p>
           <span
             className="text-sm font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0"
             style={{ backgroundColor: bg, color: text }}
           >
-            {Math.round(combinedScore)}% match
+            {Math.round(combinedScore)}%
           </span>
         </div>
-        <p className="text-sm text-ink/50 truncate">
-          {user.town} &middot; {user.distanceMiles.toFixed(1)} miles away
-        </p>
 
         {visibleInterests.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-1">
