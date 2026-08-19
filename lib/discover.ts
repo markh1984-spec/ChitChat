@@ -1,12 +1,7 @@
 import { calculateMatchScore, UserProfile } from './matching'
 import { MockUser } from './mockUsers'
 
-export interface MatchWeights {
-  location: number
-  interests: number
-}
-
-export const BALANCED_WEIGHTS: MatchWeights = { location: 0.5, interests: 0.5 }
+export const BALANCED_PRIORITY = 0.5
 
 export interface DiscoverResult {
   user: MockUser
@@ -26,21 +21,17 @@ export function locationScoreFromDistance(distanceMiles: number): number {
 }
 
 /**
- * Blend interest and location scores according to a user's two priority
- * sliders (each 0-1, representing how much that axis matters). All-zero
- * weights fall back to a balanced blend so results never break.
+ * Blend interest and location scores along a single priority slider.
+ * priority = 0   -> pure "nearby" ranking
+ * priority = 1   -> pure "shared interests" ranking
+ * priority = 0.5 -> balanced, equal weight
  */
 export function rankMatches(
   me: UserProfile,
   candidates: MockUser[],
-  weights: MatchWeights
+  priority: number
 ): DiscoverResult[] {
-  const w = {
-    location: Math.max(0, Math.min(1, weights.location)),
-    interests: Math.max(0, Math.min(1, weights.interests)),
-  }
-  const totalWeight = w.location + w.interests
-  const normalized = totalWeight === 0 ? BALANCED_WEIGHTS : w
+  const weight = Math.max(0, Math.min(1, priority))
 
   return candidates
     .map(candidate => {
@@ -49,9 +40,7 @@ export function rankMatches(
         interests: candidate.interests,
       })
       const locationScore = locationScoreFromDistance(candidate.distanceMiles)
-      const combinedScore =
-        (normalized.location * locationScore + normalized.interests * interestScore) /
-        (normalized.location + normalized.interests)
+      const combinedScore = weight * interestScore + (1 - weight) * locationScore
       const myInterestIds = new Set(me.interests.map(i => i.interestId))
       const sharedInterestIds = candidate.interests
         .filter(i => myInterestIds.has(i.interestId))
@@ -60,4 +49,17 @@ export function rankMatches(
       return { user: candidate, interestScore, locationScore, combinedScore, sharedInterestIds }
     })
     .sort((a, b) => b.combinedScore - a.combinedScore)
+}
+
+/**
+ * Maps a 0-100 match score to a red-to-green color pair for badges.
+ * 0 = red (poor match), 100 = green (excellent match).
+ */
+export function scoreColor(score: number): { bg: string; text: string } {
+  const clamped = Math.max(0, Math.min(100, score))
+  const hue = (clamped / 100) * 120
+  return {
+    bg: `hsl(${hue}, 70%, 90%)`,
+    text: `hsl(${hue}, 70%, 26%)`,
+  }
 }

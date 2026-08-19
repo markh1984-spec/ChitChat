@@ -6,7 +6,7 @@ import PrioritySlider from '@/components/PrioritySlider'
 import MatchCard from '@/components/MatchCard'
 import TownAutocomplete from '@/components/TownAutocomplete'
 import { MOCK_USERS } from '@/lib/mockUsers'
-import { rankMatches, BALANCED_WEIGHTS, MatchWeights } from '@/lib/discover'
+import { rankMatches, BALANCED_PRIORITY } from '@/lib/discover'
 import { ICEBREAKER_QUESTION, ICEBREAKER_OPTIONS, getIcebreakerOption } from '@/lib/icebreaker'
 import { loadLastLogin, saveLastLogin, clearLastLogin } from '@/lib/storage'
 
@@ -24,7 +24,7 @@ export default function DemoPage() {
   const [ageInput, setAgeInput] = useState(DEFAULT_AGE)
   const age = Number(ageInput) || 0
   const [selectedInterests, setSelectedInterests] = useState<string[]>([])
-  const [weights, setWeights] = useState<MatchWeights>(BALANCED_WEIGHTS)
+  const [priority, setPriority] = useState(BALANCED_PRIORITY)
   const [icebreakerAnswerId, setIcebreakerAnswerId] = useState<string | null>(null)
 
   const [loadName, setLoadName] = useState('')
@@ -55,7 +55,7 @@ export default function DemoPage() {
         const res = await fetch('/api/profile', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, pin, town, age, selectedInterests, weights, icebreakerAnswerId }),
+          body: JSON.stringify({ name, pin, town, age, selectedInterests, priority, icebreakerAnswerId }),
         })
         setSaveStatus(res.ok ? 'saved' : 'error')
         if (res.ok) saveLastLogin({ name, pin })
@@ -67,7 +67,7 @@ export default function DemoPage() {
     return () => {
       if (saveTimeout.current) clearTimeout(saveTimeout.current)
     }
-  }, [name, pin, town, age, selectedInterests, weights, icebreakerAnswerId])
+  }, [name, pin, town, age, selectedInterests, priority, icebreakerAnswerId])
 
   const toggleInterest = (id: string) => {
     setSelectedInterests(prev =>
@@ -100,7 +100,7 @@ export default function DemoPage() {
       setTown(profile.town)
       setAgeInput(String(profile.age))
       setSelectedInterests(profile.selectedInterests)
-      setWeights(profile.weights)
+      setPriority(profile.priority)
       setIcebreakerAnswerId(profile.icebreakerAnswerId)
       saveLastLogin({ name: profile.name, pin: profile.pin })
       setLoadStatus('idle')
@@ -117,7 +117,7 @@ export default function DemoPage() {
     setTown('Riverside')
     setAgeInput(DEFAULT_AGE)
     setSelectedInterests([])
-    setWeights(BALANCED_WEIGHTS)
+    setPriority(BALANCED_PRIORITY)
     setIcebreakerAnswerId(null)
     setSaveStatus('idle')
     setStep('welcome')
@@ -133,8 +133,8 @@ export default function DemoPage() {
   )
 
   const matches = useMemo(
-    () => rankMatches(me, MOCK_USERS, weights),
-    [me, weights]
+    () => rankMatches(me, MOCK_USERS, priority),
+    [me, priority]
   )
 
   const icebreakerAnswer = icebreakerAnswerId ? getIcebreakerOption(icebreakerAnswerId) : null
@@ -340,10 +340,10 @@ export default function DemoPage() {
           )}
 
           <div className="mb-8">
-            <PrioritySlider value={weights} onChange={setWeights} />
+            <PrioritySlider value={priority} onChange={setPriority} />
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-2">
             {matches.map(result => (
               <MatchCard key={result.user.id} result={result} />
             ))}

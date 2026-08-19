@@ -1,12 +1,10 @@
-import { MatchWeights } from './discover'
-
 export interface AirtableProfile {
   name: string
   pin: string
   town: string
   age: number
   selectedInterests: string[]
-  weights: MatchWeights
+  priority: number
   icebreakerAnswerId: string | null
 }
 
@@ -36,19 +34,15 @@ function toFields(profile: AirtableProfile) {
     Town: profile.town,
     Age: profile.age,
     Interests: profile.selectedInterests.join(','),
-    Weights: JSON.stringify(profile.weights),
+    Weights: String(profile.priority),
     IcebreakerAnswerId: profile.icebreakerAnswerId ?? '',
   }
 }
 
 function fromFields(record: { fields: Record<string, unknown> }): AirtableProfile {
   const f = record.fields
-  let weights: MatchWeights = { location: 0.5, interests: 0.5 }
-  try {
-    if (typeof f.Weights === 'string') weights = JSON.parse(f.Weights)
-  } catch {
-    // fall back to balanced weights on malformed data
-  }
+  const parsedPriority = typeof f.Weights === 'string' ? Number(f.Weights) : NaN
+  const priority = Number.isFinite(parsedPriority) ? parsedPriority : 0.5
   return {
     name: typeof f.Name === 'string' ? f.Name : '',
     pin: typeof f.Pin === 'string' ? f.Pin : '',
@@ -56,7 +50,7 @@ function fromFields(record: { fields: Record<string, unknown> }): AirtableProfil
     age: typeof f.Age === 'number' ? f.Age : 0,
     selectedInterests:
       typeof f.Interests === 'string' && f.Interests.length > 0 ? f.Interests.split(',') : [],
-    weights,
+    priority,
     icebreakerAnswerId: typeof f.IcebreakerAnswerId === 'string' && f.IcebreakerAnswerId
       ? f.IcebreakerAnswerId
       : null,

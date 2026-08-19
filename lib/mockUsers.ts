@@ -17,7 +17,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Riverside',
     distanceMiles: 0.8,
     bio: 'Retired teacher, always got a new book on the go.',
-    avatar: '👵',
+    avatar: 'https://randomuser.me/api/portraits/women/12.jpg',
     interests: [
       { interestId: 'reading', level: 9 },
       { interestId: 'gardening', level: 7 },
@@ -31,7 +31,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Oakfield',
     distanceMiles: 12.4,
     bio: 'Ex-postman. Still walk further than my dog wants to.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/11.jpg',
     interests: [
       { interestId: 'walking', level: 10 },
       { interestId: 'birdwatching', level: 8 },
@@ -45,7 +45,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Riverside',
     distanceMiles: 1.6,
     bio: 'Learning to make my grandmother\'s recipes properly.',
-    avatar: '👩',
+    avatar: 'https://randomuser.me/api/portraits/women/23.jpg',
     interests: [
       { interestId: 'cooking', level: 9 },
       { interestId: 'crafts', level: 6 },
@@ -59,7 +59,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Millbrook',
     distanceMiles: 3.2,
     bio: 'Chess on Tuesdays, complaints about the weather every day.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/22.jpg',
     interests: [
       { interestId: 'chess', level: 10 },
       { interestId: 'history', level: 8 },
@@ -73,7 +73,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Riverside',
     distanceMiles: 2.1,
     bio: 'Grandkids keep me young. So does line dancing.',
-    avatar: '👩',
+    avatar: 'https://randomuser.me/api/portraits/women/34.jpg',
     interests: [
       { interestId: 'dancing', level: 9 },
       { interestId: 'grandkids', level: 10 },
@@ -87,7 +87,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Elmswood',
     distanceMiles: 18.7,
     bio: 'Allotment keeps me out of trouble most days.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/33.jpg',
     interests: [
       { interestId: 'gardening', level: 10 },
       { interestId: 'birdwatching', level: 6 },
@@ -101,7 +101,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Millbrook',
     distanceMiles: 3.9,
     bio: 'Trying to finally understand this smartphone.',
-    avatar: '👩',
+    avatar: 'https://randomuser.me/api/portraits/women/45.jpg',
     interests: [
       { interestId: 'tech', level: 8 },
       { interestId: 'crafts', level: 7 },
@@ -115,7 +115,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Riverside',
     distanceMiles: 0.4,
     bio: 'Local history buff, will talk your ear off about the old mill.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/44.jpg',
     interests: [
       { interestId: 'history', level: 10 },
       { interestId: 'reading', level: 7 },
@@ -129,7 +129,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Elmswood',
     distanceMiles: 16.2,
     bio: 'Swim club three mornings a week, rain or shine.',
-    avatar: '👩',
+    avatar: 'https://randomuser.me/api/portraits/women/56.jpg',
     interests: [
       { interestId: 'swimming', level: 9 },
       { interestId: 'travel', level: 7 },
@@ -143,7 +143,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Oakfield',
     distanceMiles: 11.8,
     bio: 'Volunteer driver, always up for a day trip.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/55.jpg',
     interests: [
       { interestId: 'volunteering', level: 9 },
       { interestId: 'travel', level: 8 },
@@ -157,7 +157,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Millbrook',
     distanceMiles: 5.6,
     bio: 'The woodworking shed is my happy place.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/66.jpg',
     interests: [
       { interestId: 'woodworking', level: 9 },
       { interestId: 'chess', level: 6 },
@@ -171,7 +171,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Oakfield',
     distanceMiles: 9.3,
     bio: 'Choir practice Tuesdays, gossip included.',
-    avatar: '👵',
+    avatar: 'https://randomuser.me/api/portraits/women/67.jpg',
     interests: [
       { interestId: 'choir', level: 9 },
       { interestId: 'singing', level: 7 },
@@ -185,7 +185,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Riverside',
     distanceMiles: 1.2,
     bio: 'Fixing up an old motorbike in the garage.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/77.jpg',
     interests: [
       { interestId: 'motorcycling', level: 9 },
       { interestId: 'classic_cars', level: 7 },
@@ -199,7 +199,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Elmswood',
     distanceMiles: 14.5,
     bio: 'Beekeeping since 1998, ask me anything.',
-    avatar: '👵',
+    avatar: 'https://randomuser.me/api/portraits/women/78.jpg',
     interests: [
       { interestId: 'beekeeping', level: 10 },
       { interestId: 'allotment', level: 7 },
@@ -213,7 +213,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Millbrook',
     distanceMiles: 4.1,
     bio: 'Sunday snooker league, no excuses.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/88.jpg',
     interests: [
       { interestId: 'snooker', level: 9 },
       { interestId: 'darts', level: 6 },
@@ -227,7 +227,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Riverside',
     distanceMiles: 0.9,
     bio: 'Jigsaw puzzles take over my dining table.',
-    avatar: '👵',
+    avatar: 'https://randomuser.me/api/portraits/women/15.jpg',
     interests: [
       { interestId: 'jigsaw_puzzles', level: 9 },
       { interestId: 'crossword', level: 7 },
@@ -241,7 +241,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Oakfield',
     distanceMiles: 10.6,
     bio: 'Model railway in the loft, always growing.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/10.jpg',
     interests: [
       { interestId: 'model_trains', level: 10 },
       { interestId: 'photography', level: 5 },
@@ -255,7 +255,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Riverside',
     distanceMiles: 2.8,
     bio: 'Flower arranging club treasurer.',
-    avatar: '👵',
+    avatar: 'https://randomuser.me/api/portraits/women/26.jpg',
     interests: [
       { interestId: 'flower_arranging', level: 9 },
       { interestId: 'gardening', level: 7 },
@@ -269,7 +269,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Elmswood',
     distanceMiles: 17.9,
     bio: 'Sea fishing whenever the weather allows.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/21.jpg',
     interests: [
       { interestId: 'fishing', level: 10 },
       { interestId: 'sailing', level: 6 },
@@ -283,7 +283,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Millbrook',
     distanceMiles: 6.4,
     bio: 'Quilting group meets fortnightly.',
-    avatar: '👵',
+    avatar: 'https://randomuser.me/api/portraits/women/37.jpg',
     interests: [
       { interestId: 'quilting', level: 9 },
       { interestId: 'sewing', level: 7 },
@@ -297,7 +297,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Riverside',
     distanceMiles: 1.9,
     bio: 'Bell ringing on Sundays, walking the rest of the week.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
     interests: [
       { interestId: 'bell_ringing', level: 9 },
       { interestId: 'walking', level: 6 },
@@ -311,7 +311,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Oakfield',
     distanceMiles: 11.3,
     bio: 'Karaoke nights are non-negotiable.',
-    avatar: '👵',
+    avatar: 'https://randomuser.me/api/portraits/women/48.jpg',
     interests: [
       { interestId: 'karaoke', level: 9 },
       { interestId: 'singing', level: 7 },
@@ -325,7 +325,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Riverside',
     distanceMiles: 3.5,
     bio: 'Archery club on weekends, steady hands still.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/43.jpg',
     interests: [
       { interestId: 'archery', level: 9 },
       { interestId: 'fencing', level: 5 },
@@ -339,7 +339,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Elmswood',
     distanceMiles: 15.8,
     bio: 'Cheese making is my retirement project.',
-    avatar: '👵',
+    avatar: 'https://randomuser.me/api/portraits/women/59.jpg',
     interests: [
       { interestId: 'cheese_making', level: 9 },
       { interestId: 'cooking', level: 7 },
@@ -353,7 +353,7 @@ export const MOCK_USERS: MockUser[] = [
     town: 'Millbrook',
     distanceMiles: 4.9,
     bio: 'Stargazing with a flask of tea, best hobby going.',
-    avatar: '👴',
+    avatar: 'https://randomuser.me/api/portraits/men/54.jpg',
     interests: [
       { interestId: 'stargazing', level: 9 },
       { interestId: 'astronomy', level: 8 },

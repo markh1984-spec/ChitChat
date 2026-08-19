@@ -1,7 +1,6 @@
 'use client'
 
-import { useId, useRef, useState } from 'react'
-import { searchTowns } from '@/lib/towns'
+import { useEffect, useId, useRef, useState } from 'react'
 
 export default function TownAutocomplete({
   value,
@@ -12,10 +11,37 @@ export default function TownAutocomplete({
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const [highlighted, setHighlighted] = useState(0)
+  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const listId = useId()
-  const containerRef = useRef<HTMLDivElement>(null)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const requestId = useRef(0)
 
-  const suggestions = isOpen ? searchTowns(value).slice(0, 8) : []
+  useEffect(() => {
+    if (!isOpen || value.trim().length < 2) {
+      setSuggestions([])
+      return
+    }
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(async () => {
+      const thisRequest = ++requestId.current
+      setIsLoading(true)
+      try {
+        const res = await fetch(`/api/towns?q=${encodeURIComponent(value)}`)
+        const data = await res.json()
+        if (thisRequest === requestId.current) {
+          setSuggestions(Array.isArray(data.towns) ? data.towns : [])
+        }
+      } catch {
+        if (thisRequest === requestId.current) setSuggestions([])
+      } finally {
+        if (thisRequest === requestId.current) setIsLoading(false)
+      }
+    }, 350)
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
+  }, [value, isOpen])
 
   const selectTown = (town: string) => {
     onChange(town)
@@ -39,7 +65,7 @@ export default function TownAutocomplete({
   }
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div className="relative">
       <input
         id="town"
         type="text"
@@ -57,15 +83,18 @@ export default function TownAutocomplete({
         onFocus={() => setIsOpen(true)}
         onBlur={() => setTimeout(() => setIsOpen(false), 150)}
         onKeyDown={handleKeyDown}
-        placeholder="Start typing your town…"
+        placeholder="Start typing a town or city…"
         className="w-full text-xl px-4 py-3 border-2 border-primary-200 bg-white rounded-xl focus:border-primary-500 focus:outline-none"
       />
-      {isOpen && suggestions.length > 0 && (
+      {isOpen && (isLoading || suggestions.length > 0) && (
         <ul
           id={listId}
           role="listbox"
           className="absolute z-20 mt-2 w-full bg-white border-2 border-primary-200 rounded-xl shadow-lg overflow-hidden"
         >
+          {isLoading && suggestions.length === 0 && (
+            <li className="px-4 py-3 text-lg text-ink/50">Searching…</li>
+          )}
           {suggestions.map((town, i) => (
             <li key={town} role="option" aria-selected={i === highlighted}>
               <button
