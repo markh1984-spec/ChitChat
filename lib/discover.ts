@@ -50,8 +50,14 @@ export function rankMatches(
       const sharedInterestIds = candidate.interests
         .filter(i => myInterestIds.has(i.interestId))
         .map(i => i.interestId)
-      const overlappingAvailability = candidate.availability.filter(a => myAvailabilitySet.has(a))
-      const adHocAvailable = myAdHoc || candidate.adHoc
+      // If I'm ad hoc, I'll fit around any time they've set — so all of their
+      // slots count as "available", not just ones that literally overlap mine.
+      // But my own flexibility never implies THEY are free anytime; that's
+      // only true if they've said so themselves.
+      const overlappingAvailability = myAdHoc
+        ? candidate.availability
+        : candidate.availability.filter(a => myAvailabilitySet.has(a))
+      const adHocAvailable = candidate.adHoc
 
       return {
         user: candidate,
