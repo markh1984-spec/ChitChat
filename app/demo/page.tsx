@@ -5,18 +5,20 @@ import InterestPicker from '@/components/InterestPicker'
 import PrioritySlider from '@/components/PrioritySlider'
 import MatchCard from '@/components/MatchCard'
 import { MOCK_USERS } from '@/lib/mockUsers'
-import { rankMatches } from '@/lib/discover'
+import { rankMatches, BALANCED_WEIGHTS, MatchWeights } from '@/lib/discover'
 
 type Step = 'welcome' | 'profile' | 'interests' | 'matches'
 
 const MIN_INTERESTS = 3
+const DEFAULT_AGE = 68
 
 export default function DemoPage() {
   const [step, setStep] = useState<Step>('welcome')
   const [name, setName] = useState('')
   const [town, setTown] = useState('Riverside')
+  const [age, setAge] = useState(DEFAULT_AGE)
   const [selectedInterests, setSelectedInterests] = useState<string[]>([])
-  const [priority, setPriority] = useState(0.5)
+  const [weights, setWeights] = useState<MatchWeights>(BALANCED_WEIGHTS)
 
   const toggleInterest = (id: string) => {
     setSelectedInterests(prev =>
@@ -27,14 +29,15 @@ export default function DemoPage() {
   const me = useMemo(
     () => ({
       id: 'me',
+      age,
       interests: selectedInterests.map(id => ({ interestId: id, level: 8 })),
     }),
-    [selectedInterests]
+    [selectedInterests, age]
   )
 
   const matches = useMemo(
-    () => rankMatches(me, MOCK_USERS, priority),
-    [me, priority]
+    () => rankMatches(me, MOCK_USERS, weights),
+    [me, weights]
   )
 
   return (
@@ -97,6 +100,20 @@ export default function DemoPage() {
                 <option>Elmswood</option>
               </select>
             </div>
+            <div>
+              <label htmlFor="age" className="block text-xl font-medium text-ink mb-2">
+                Your age
+              </label>
+              <input
+                id="age"
+                type="number"
+                min={18}
+                max={110}
+                value={age}
+                onChange={e => setAge(Number(e.target.value))}
+                className="w-full text-xl px-4 py-3 border-2 border-primary-200 bg-white rounded-xl focus:border-primary-500 focus:outline-none"
+              />
+            </div>
           </div>
           <div className="flex justify-between mt-10">
             <BackButton onClick={() => setStep('welcome')} />
@@ -131,7 +148,7 @@ export default function DemoPage() {
           </h2>
 
           <div className="mb-8">
-            <PrioritySlider value={priority} onChange={setPriority} />
+            <PrioritySlider value={weights} onChange={setWeights} />
           </div>
 
           <div className="space-y-4">

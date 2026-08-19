@@ -1,10 +1,19 @@
 import { calculateMatchScore, UserProfile } from './matching'
 import { MockUser } from './mockUsers'
 
+export interface MatchWeights {
+  location: number
+  interests: number
+  age: number
+}
+
+export const BALANCED_WEIGHTS: MatchWeights = { location: 0.5, interests: 0.5, age: 0.5 }
+
 export interface DiscoverResult {
   user: MockUser
   interestScore: number
   locationScore: number
+  ageScore: number
   combinedScore: number
   sharedInterestIds: string[]
 }
@@ -19,17 +28,31 @@ export function locationScoreFromDistance(distanceMiles: number): number {
 }
 
 /**
- * Blend interest and location scores according to a user's priority slider.
- * priority = 0   -> pure "nearby" ranking
- * priority = 1   -> pure "shared interests" ranking
- * priority = 0.5 -> balanced, equal weight
+ * Converts an age gap in years to a 0-100 closeness score.
+ * Same age scores 100; closeness fades to 0 by a 25-year gap.
+ */
+export function ageScoreFromGap(ageGapYears: number): number {
+  const score = 100 - Math.abs(ageGapYears) * 4
+  return Math.max(0, Math.min(100, score))
+}
+
+/**
+ * Blend location, interest, and age scores according to a user's three
+ * priority sliders (each 0-1, representing how much that axis matters).
+ * All-zero weights fall back to a balanced blend so results never break.
  */
 export function rankMatches(
-  me: UserProfile,
+  me: UserProfile & { age: number },
   candidates: MockUser[],
-  priority: number
+  weights: MatchWeights
 ): DiscoverResult[] {
-  const weight = Math.max(0, Math.min(1, priority))
+  const w = {
+    location: Math.max(0, Math.min(1, weights.location)),
+    interests: Math.max(0, Math.min(1, weights.interests)),
+    age: Math.max(0, Math.min(1, weights.age)),
+  }
+  const totalWeight = w.location + w.interests + w.age
+  const normalized = totalWeight === 0 ? BALANCED_WEIGHTS : w
 
   return candidates
     .map(candidate => {
@@ -38,13 +61,25 @@ export function rankMatches(
         interests: candidate.interests,
       })
       const locationScore = locationScoreFromDistance(candidate.distanceMiles)
-      const combinedScore = weight * interestScore + (1 - weight) * locationScore
+      const ageScore = ageScoreFromGap(candidate.age - me.age)
+      const combinedScore =
+        (normalized.location * locationScore +
+          normalized.interests * interestScore +
+          normalized.age * ageScore) /
+        (normalized.location + normalized.interests + normalized.age)
       const myInterestIds = new Set(me.interests.map(i => i.interestId))
       const sharedInterestIds = candidate.interests
         .filter(i => myInterestIds.has(i.interestId))
         .map(i => i.interestId)
 
-      return { user: candidate, interestScore, locationScore, combinedScore, sharedInterestIds }
+      return {
+        user: candidate,
+        interestScore,
+        locationScore,
+        ageScore,
+        combinedScore,
+        sharedInterestIds,
+      }
     })
     .sort((a, b) => b.combinedScore - a.combinedScore)
 }
